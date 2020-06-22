@@ -15,46 +15,6 @@ The following modifications have been added on top of the official TPC-H kit:
 * add define for PostgreSQL to support `LIMIT N` for `qgen`
 * adjust `Makefile` defaults
 
-## Setup
-
-### Linux
-
-Make sure the required development tools are installed:
-
-Ubuntu:
-```
-sudo apt-get install git make gcc
-```
-
-CentOS/RHEL:
-```
-sudo yum install git make gcc
-```
-
-Then run the following commands to clone the repo and build the tools:
-
-```
-git clone https://github.com/gregrahn/tpch-kit.git
-cd tpch-kit/dbgen
-make MACHINE=LINUX DATABASE=POSTGRESQL
-```
-
-### macOS
-
-Make sure the required development tools are installed:
-
-```
-xcode-select --install
-```
-
-Then run the following commands to clone the repo and build the tools:
-
-```
-git clone https://github.com/gregrahn/tpch-kit.git
-cd tpch-kit/dbgen
-make MACHINE=MACOS DATABASE=POSTGRESQL
-```
-
 ## Using the TPC-H tools
 
 ### Environment
@@ -91,4 +51,23 @@ To generate one query per file for SF 3000 (3TB) use:
 for ((i=1;i<=22;i++)); do
   ./qgen -v -c -s 3000 ${i} > /tmp/sf3000/tpch-q${i}.sql
 done
+```
+
+## My modifications
+
+Added some scripts to load data and generate queries. Use the following commands to do everything:
+
+```
+cd dbgen
+make
+
+./dbgen -vf -s 1
+
+createdb tpch;
+
+psql tpch -f dss.ddl
+psql tpch -f dss.ri
+
+./load_data.sh
+./generate_queries.sh
 ```
