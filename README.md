@@ -59,15 +59,18 @@ Added some scripts to load data and generate queries. Use the following commands
 
 ```
 cd dbgen
+
 make
 
 ./dbgen -vf -s 1
 
-createdb tpch;
+createdb tpch
 
 psql tpch -f dss.ddl
-psql tpch -f dss.ri
 
 ./load_data.sh
+
+psql tpch -f dss.ri
+
 ./generate_queries.sh
 ```
